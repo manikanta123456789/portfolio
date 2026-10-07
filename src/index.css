@@ -1,36 +1,40 @@
 @import "tailwindcss";
 
-/* Theme tokens. Dark is default; [data-theme="light"] overrides. */
+/* Theme tokens. Plain white is default; [data-theme="dark"] overrides. */
 :root,
-[data-theme="dark"] {
-  --bg: #0e1621;
-  --panel: #142031;
-  --line: #24344a;
-  --text: #e6edf5;
-  --muted: #97a7ba;
-  --accent: #f5b544; /* instrument amber: fills, strokes */
-  --accent-text: #f5b544; /* amber used as text */
-  --on-accent: #0e1621;
-  --grid: rgba(151, 167, 186, 0.06);
-  color-scheme: dark;
-}
-
 [data-theme="light"] {
-  --bg: #f2f5f9;
-  --panel: #ffffff;
-  --line: #d3dce6;
+  --bg: #ffffff;
+  --grid: rgba(14, 22, 33, 0.06);
+  --glass: rgba(255, 255, 255, 0.65);
+  --glass-edge: rgba(14, 22, 33, 0.09);
+  --line: rgba(14, 22, 33, 0.1);
   --text: #0e1621;
   --muted: #4a5a6d;
-  --accent: #f5b544;
-  --accent-text: #8a5000;
+  --accent: #f5b544; /* instrument amber: fills */
+  --accent-text: #8a5000; /* amber dark enough for text on white */
   --on-accent: #0e1621;
-  --grid: rgba(14, 22, 33, 0.05);
+  --shadow: 0 1px 2px rgba(14, 22, 33, 0.04), 0 8px 24px rgba(14, 22, 33, 0.06);
   color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg: #0e1621;
+  --grid: rgba(151, 167, 186, 0.06);
+  --glass: rgba(255, 255, 255, 0.04);
+  --glass-edge: rgba(255, 255, 255, 0.1);
+  --line: rgba(255, 255, 255, 0.1);
+  --text: #e6edf5;
+  --muted: #97a7ba;
+  --accent: #f5b544;
+  --accent-text: #f5b544;
+  --on-accent: #0e1621;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  color-scheme: dark;
 }
 
 @theme inline {
   --color-bg: var(--bg);
-  --color-panel: var(--panel);
+  --color-glass: var(--glass);
   --color-line: var(--line);
   --color-text: var(--text);
   --color-muted: var(--muted);
@@ -48,7 +52,7 @@ html {
 
 body {
   background-color: var(--bg);
-  /* faint engineering-paper grid */
+  /* faint engineering-paper grid; glass panels blur it */
   background-image:
     linear-gradient(var(--grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid) 1px, transparent 1px);
@@ -96,9 +100,51 @@ body {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-  .cursor {
+  .cursor,
+  .pulse::after {
     animation: none !important;
   }
+  .lift:hover {
+    transform: none;
+  }
+}
+
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--shadow);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+/* Hover lift for cards */
+.lift {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+.lift:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 12px 32px rgba(245, 181, 68, 0.18);
+}
+
+/* Timeline dot ping */
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+.pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--accent);
+  animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
 @keyframes blink {
@@ -108,14 +154,4 @@ body {
 }
 .cursor {
   animation: blink 1.1s steps(1) infinite;
-}
-
-/* Milestone labels appear as the trace passes each spike */
-@keyframes label-in {
-  from {
-    opacity: 0;
-  }
-}
-.label-in {
-  animation: label-in 0.5s ease-out backwards;
 }

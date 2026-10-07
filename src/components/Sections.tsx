@@ -10,7 +10,7 @@ import {
   skills,
   type Project,
 } from "../data/portfolio";
-import { LinkedInIcon, MailIcon } from "./Icons";
+import { GitHubIcon, LinkedInIcon, MailIcon } from "./Icons";
 import { ProjectLink, Section, Tag } from "./ui";
 
 export function About() {
@@ -31,7 +31,7 @@ export function Experience() {
       <ol className="relative border-l border-line">
         {experience.map((r) => (
           <li key={r.company + r.start} className="relative pb-4 pl-6 sm:pl-8">
-            <span className="absolute top-2 -left-[5px] size-[9px] rounded-full bg-accent" aria-hidden />
+            <span className="pulse absolute top-2 -left-[5px] size-[9px] rounded-full bg-accent" aria-hidden />
             <p className="font-mono text-sm text-muted">
               {r.start} to {r.end}
             </p>
@@ -72,7 +72,7 @@ function ProjectBody({ p, large }: { p: Project; large: boolean }) {
         </ul>
         <div className="mt-5 flex flex-wrap gap-2">
           <ProjectLink href={p.github} label="GitHub" />
-          <ProjectLink href={p.demo} label="Live demo" />
+          {p.demo !== false && <ProjectLink href={p.demo} label="Live demo" />}
         </div>
       </div>
     </>
@@ -86,10 +86,7 @@ export function Projects() {
     <Section id="projects" title="Projects">
       <div className="space-y-6">
         {featured.map((p) => (
-          <article
-            key={p.title}
-            className="grid gap-6 rounded-2xl border border-line bg-panel p-6 sm:p-8 md:grid-cols-5 md:gap-10"
-          >
+          <article key={p.title} className="glass lift grid gap-6 rounded-3xl p-6 sm:p-8 md:grid-cols-5 md:gap-10">
             <ProjectBody p={p} large />
           </article>
         ))}
@@ -97,7 +94,7 @@ export function Projects() {
       {rest.length > 0 && (
         <div className="mt-6 grid gap-6 md:grid-cols-2">
           {rest.map((p) => (
-            <article key={p.title} className="rounded-xl border border-line p-6">
+            <article key={p.title} className="glass lift rounded-3xl p-6 sm:p-8">
               <ProjectBody p={p} large={false} />
             </article>
           ))}
@@ -110,7 +107,7 @@ export function Projects() {
 export function Skills() {
   return (
     <Section id="skills" title="Skills">
-      <dl className="divide-y divide-line border-y border-line">
+      <dl className="glass divide-y divide-line rounded-3xl px-6 sm:px-8">
         {skills.map((g) => (
           <div key={g.name} className="grid gap-3 py-5 sm:grid-cols-[10rem_1fr] sm:gap-6">
             <dt className="font-semibold">{g.name}</dt>
@@ -131,8 +128,8 @@ export function Skills() {
 export function Achievements() {
   return (
     <Section id="achievements" title="Achievements and leadership">
-      <div className="grid gap-12 md:grid-cols-2">
-        <div>
+      <div className="grid gap-6 md:grid-cols-2">
+        <div className="glass lift rounded-3xl p-6 sm:p-8">
           <h3 className="heading mb-4 text-xl">Certifications</h3>
           <ul className="space-y-3">
             {certifications.map((c) => (
@@ -143,7 +140,7 @@ export function Achievements() {
             ))}
           </ul>
         </div>
-        <div>
+        <div className="glass lift rounded-3xl p-6 sm:p-8">
           <h3 className="heading mb-4 text-xl">Highlights</h3>
           <ul className="list-disc space-y-3 pl-5 marker:text-accent-text">
             {achievements.map((a) => (
@@ -174,7 +171,7 @@ export function Education() {
                 <p className="mt-1 font-mono text-sm">{s.score}</p>
               ) : (
                 s === education[0] && (
-                  <p className="mt-2 inline-block rounded border border-dashed border-line px-2 font-mono text-[0.8125rem] text-muted">
+                  <p className="mt-2 inline-block rounded-lg border border-dashed border-line px-2 font-mono text-[0.8125rem] text-muted">
                     CGPA: add in portfolio.ts
                   </p>
                 )
@@ -200,40 +197,52 @@ export function Contact() {
   };
   return (
     <Section id="contact" title="Contact">
-      <p className="max-w-[48ch] text-lg text-muted">
-        I'm looking for entry-level software and full stack roles. Email is the fastest way to reach me.
-      </p>
-      <a
-        href={`mailto:${profile.email}`}
-        className="heading mt-6 inline-block text-[clamp(1.4rem,5vw,2.75rem)] break-all underline decoration-accent decoration-2 underline-offset-8 hover:text-accent-text"
-      >
-        {profile.email}
-      </a>
-      <div className="mt-8 flex flex-wrap items-center gap-3">
-        <button
-          type="button"
-          onClick={copy}
-          className="inline-flex min-h-11 cursor-pointer items-center rounded-md bg-accent px-5 font-semibold text-on-accent transition-opacity hover:opacity-90"
-        >
-          {copied ? "Email copied" : "Copy email"}
-        </button>
+      <div className="glass rounded-3xl p-6 sm:p-10">
+        <p className="max-w-[48ch] text-lg text-muted">
+          I'm looking for entry-level software and full stack roles. Email is the fastest way to reach me.
+        </p>
         <a
           href={`mailto:${profile.email}`}
-          className="inline-flex min-h-11 items-center gap-2 rounded-md border border-line px-4 transition-colors hover:border-accent hover:text-accent-text"
+          className="heading mt-6 inline-block text-[clamp(1.4rem,5vw,2.75rem)] break-all underline decoration-accent decoration-2 underline-offset-8 hover:text-accent-text"
         >
-          <MailIcon /> Send email
+          {profile.email}
         </a>
-        <a
-          href={profile.linkedin}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex min-h-11 items-center gap-2 rounded-md border border-line px-4 transition-colors hover:border-accent hover:text-accent-text"
-        >
-          <LinkedInIcon /> LinkedIn
-        </a>
-        <span role="status" className="sr-only">
-          {copied ? "Email address copied to clipboard" : ""}
-        </span>
+        <div className="mt-8 flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={copy}
+            className="inline-flex min-h-11 cursor-pointer items-center rounded-xl bg-accent px-5 font-semibold text-on-accent transition-opacity hover:opacity-90"
+          >
+            {copied ? "Email copied" : "Copy email"}
+          </button>
+          <a
+            href={`mailto:${profile.email}`}
+            className="glass inline-flex min-h-11 items-center gap-2 rounded-xl px-4 transition-colors hover:text-accent-text"
+          >
+            <MailIcon /> Send email
+          </a>
+          <a
+            href={profile.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            className="glass inline-flex min-h-11 items-center gap-2 rounded-xl px-4 transition-colors hover:text-accent-text"
+          >
+            <LinkedInIcon /> LinkedIn
+          </a>
+          {profile.github && (
+            <a
+              href={profile.github}
+              target="_blank"
+              rel="noreferrer"
+              className="glass inline-flex min-h-11 items-center gap-2 rounded-xl px-4 transition-colors hover:text-accent-text"
+            >
+              <GitHubIcon /> GitHub
+            </a>
+          )}
+          <span role="status" className="sr-only">
+            {copied ? "Email address copied to clipboard" : ""}
+          </span>
+        </div>
       </div>
     </Section>
   );

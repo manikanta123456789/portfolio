@@ -24,7 +24,8 @@ Everything shown on the site comes from `src/data/portfolio.ts`:
 | Skill groups | `skills` |
 | Certifications and highlights | `certifications`, `achievements` |
 | Schools, years, CGPA | `education` |
-| Spikes on the hero signal trace | `milestones` |
+| Timeline in the hero profile card | `milestones` |
+| "Currently", "Studying", "Status" rows in the hero card | `profile.current`, `profile.studying`, `profile.status` |
 
 Any link or score left as `null` shows a dashed "add link" placeholder on the page, so gaps are easy to spot.
 
@@ -52,11 +53,11 @@ index.html                 meta, Open Graph, fonts, theme pre-paint script
 public/                    favicon, resume PDF, robots.txt
 src/
   data/portfolio.ts        all content (edit this)
-  index.css                theme tokens (dark/light CSS variables), base styles
+  index.css                theme tokens (dark/light CSS variables), glass panel + background styles
   App.tsx                  page layout
   components/
     Nav.tsx                sticky nav, active-section highlight, theme toggle, mobile menu
-    Hero.tsx               terminal line, name, signal-trace milestones, CTAs
+    Hero.tsx               terminal line, name, CTAs, glass profile card
     Sections.tsx           About, Experience, Projects, Skills, Achievements, Education, Contact
     ui.tsx                 Section wrapper, Tag, ProjectLink
     Icons.tsx              inline SVG icons

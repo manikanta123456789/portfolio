@@ -20,7 +20,7 @@ export type Project = {
   stack: string[];
   features: string[];
   github: string | null;
-  demo: string | null;
+  demo: string | null | false; // false = no live demo, hides the button
   featured: boolean;
 };
 
@@ -43,10 +43,13 @@ export const profile = {
     "I build Node.js backends and Angular and React interfaces, currently for real-time engineering dashboards at Instrutel.",
   terminal: { command: "whoami", output: "cse undergrad, node.js intern at instrutel, open to entry-level roles" },
   location: "Hyderabad, India",
+  current: "Node.js Intern, Instrutel",
+  studying: "B.E. CSE, MVSR (2027)",
+  status: "Open to entry-level roles",
   email: "balasupriyak@gmail.com",
   phone: "+91 9014400816",
   linkedin: "https://www.linkedin.com/in/bala-supriya",
-  github: null as string | null, // TODO: add GitHub profile URL
+  github: "https://github.com/balasupriyak" as string | null,
   resume: "/Karibandi-Bala-Supriya-Resume.pdf",
   photo: null as string | null, // TODO: optional headshot in /public
 };
@@ -86,8 +89,8 @@ export const projects: Project[] = [
       "Trip planning, live weather updates and trip sharing",
       "Real-time travel information from OpenWeatherMap",
     ],
-    github: null, // TODO
-    demo: null, // TODO
+    github: "https://github.com/balasupriyak/voyage-itinerary",
+    demo: "https://voyageitinerary.netlify.app/",
     featured: true,
   },
   {
@@ -114,8 +117,8 @@ export const projects: Project[] = [
       "Score tracking, results and progress stored in Firebase",
       "Simple interface built with JavaScript and Kotlin",
     ],
-    github: null, // TODO
-    demo: null, // TODO
+    github: "https://github.com/balasupriyak/quizzapp",
+    demo: false,
     featured: false,
   },
 ];
@@ -180,7 +183,7 @@ export const nav = [
   { id: "contact", label: "Contact" },
 ];
 
-// Milestones drawn as spikes on the hero signal trace (left to right).
+// Timeline rows in the hero profile card (oldest first).
 export const milestones = [
   { when: "2023", what: "Started B.E. CSE at MVSR" },
   { when: "2025", what: "Built VOYAGE and the quiz app" },
